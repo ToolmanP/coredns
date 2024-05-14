@@ -72,7 +72,8 @@ func (e *Etcd) Records(ctx context.Context, state request.Request, exact bool) (
 	name := state.Name()
 
 	path, star := msg.PathWithWildcard(name, e.PathPrefix)
-	r, err := e.get(ctx, path, !exact)
+	// QuickFix: Just add the exact match to reject the recursive count here.
+	r, err := e.get(ctx, path, false)
 	if err != nil {
 		return nil, err
 	}
